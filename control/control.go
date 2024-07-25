@@ -26,11 +26,11 @@ func Control(ctx context.Context, credentialsFile, projectID, dataset string) er
 		return fmt.Errorf("os.Mkdir: %v", err)
 	}
 	var f output.Formatter = output.FormatterPlantUML
-	for table, schema := range schemaMap {
-		file, err := f(ctx, table, schema)
-		if err != nil {
-			return fmt.Errorf("f: %v", err)
-		}
+	files, err := f(ctx, schemaMap)
+	if err != nil {
+		return fmt.Errorf("f: %v", err)
+	}
+	for _, file := range files {
 		if err := os.WriteFile(outputDir+"/"+file.Name, file.Content, 0644); err != nil {
 			return fmt.Errorf("os.WriteFile: %v", err)
 		}
