@@ -11,7 +11,7 @@ Define following environment variables in `.env` file or set variables directly.
 
 ### Run
 ```bash
-$ go run bq-schema
+$ go run main.go
 ```
 
 then, it outputs `schemas.puml` in `target/` directory.
