@@ -5,6 +5,10 @@ Define following environment variables in `.env` file or set variables directly.
 - `GOOGLE_CLOUD_PROJECT`
 - `BIGQUERY_DATASET`
 
+> [optional]  
+> you could define exclude tables by `::` separated regular expression patterns
+> - `EXCLUDE_TABLE_PATTERNS`
+
 ### Run
 ```bash
 $ go run bq-schema

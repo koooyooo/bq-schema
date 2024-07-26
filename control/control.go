@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"regexp"
+	"strings"
 
 	"github.com/koooyooo/bq-schema/output"
 
@@ -12,7 +14,11 @@ import (
 	"google.golang.org/api/option"
 )
 
-func Control(ctx context.Context, credentialsFile, projectID, dataset string) error {
+type Options struct {
+	ExcludeTablePatterns string
+}
+
+func Control(ctx context.Context, credentialsFile, projectID, dataset string, opts *Options) error {
 	cli, err := bigquery.NewClient(ctx, projectID, option.WithCredentialsFile(credentialsFile))
 	if err != nil {
 		return fmt.Errorf("bigquery.NewClient: %v", err)
@@ -21,6 +27,22 @@ func Control(ctx context.Context, credentialsFile, projectID, dataset string) er
 	if err != nil {
 		return fmt.Errorf("loadSchemas: %v", err)
 	}
+	excludePatterns := strings.Split(opts.ExcludeTablePatterns, "::")
+	for i, pattern := range excludePatterns {
+		excludePatterns[i] = strings.TrimSpace(pattern)
+	}
+	for tableName, _ := range schemaMap {
+		for _, excludePattern := range excludePatterns {
+			matched, err := regexp.MatchString(excludePattern, tableName)
+			if err != nil {
+				return fmt.Errorf("regexp.MatchString: %v", err)
+			}
+			if matched {
+				delete(schemaMap, tableName)
+			}
+		}
+	}
+
 	outputDir := "target"
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
 		return fmt.Errorf("os.Mkdir: %v", err)
