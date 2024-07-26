@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"strings"
 
 	"cloud.google.com/go/bigquery"
 )
@@ -36,7 +37,7 @@ func FormatterPlantUML(ctx context.Context, schemas map[string]bigquery.Schema) 
 	for title, schema := range schemas {
 		b.WriteString(fmt.Sprintf("entity %s {\n", title))
 		for _, field := range schema {
-			b.WriteString(fmt.Sprintf("\t+ %s: %s\n", field.Name, field.Type))
+			b.WriteString(fmt.Sprintf("\t+ %s: %s\n", field.Name, strings.ToLower(string(field.Type))))
 		}
 		b.WriteString(fmt.Sprintln("}"))
 	}
