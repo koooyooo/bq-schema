@@ -26,7 +26,7 @@ e.g. `target/my-custom.puml`
 @startuml
 !include schemas.puml
 
-# YOUR RELATION DEFINITIONS
+' DEFINE YOUR RELATIONS HERE
 
 @enduml
 ```
