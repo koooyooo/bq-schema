@@ -1,3 +1,8 @@
+## General
+`bq-schema` connects your BigQuery and outputs its schemas in the following formats.
+
+- PlantUML E-R diagram
+
 ## Usage
 ### Settings
 Define following environment variables in `.env` file or set variables directly. Renaming `.env.template` to `.env` and define your original settings could be useful.
