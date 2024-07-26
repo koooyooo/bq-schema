@@ -8,12 +8,27 @@ import (
 	"cloud.google.com/go/bigquery"
 )
 
+type FormatterOption int
+
+const (
+	FormatterOptionPlantUML FormatterOption = iota
+)
+
 type File struct {
 	Name    string
 	Content []byte
 }
 
 type Formatter func(ctx context.Context, schemas map[string]bigquery.Schema) ([]*File, error)
+
+func FindFormatter(opt FormatterOption) Formatter {
+	switch opt {
+	case FormatterOptionPlantUML:
+		return FormatterPlantUML
+	default:
+		return FormatterPlantUML
+	}
+}
 
 func FormatterPlantUML(ctx context.Context, schemas map[string]bigquery.Schema) ([]*File, error) {
 	var b bytes.Buffer

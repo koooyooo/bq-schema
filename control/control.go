@@ -25,8 +25,8 @@ func Control(ctx context.Context, credentialsFile, projectID, dataset string) er
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
 		return fmt.Errorf("os.Mkdir: %v", err)
 	}
-	var f output.Formatter = output.FormatterPlantUML
-	files, err := f(ctx, schemaMap)
+	formatter := output.FindFormatter(output.FormatterOptionPlantUML)
+	files, err := formatter(ctx, schemaMap)
 	if err != nil {
 		return fmt.Errorf("f: %v", err)
 	}
